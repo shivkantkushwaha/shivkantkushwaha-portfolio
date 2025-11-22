@@ -1,3 +1,4 @@
+# .github/workflows/ci.yml
 name: CI
 
 on:
@@ -18,3 +19,18 @@ jobs:
       - run: npm ci
       - run: npm run lint || true   # if you haven't set up lint scripts yet, allow true
       - run: npm run build
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.9.0'   # <-- important: Next.js requires >=20.9.0
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint || true
+
+      - name: Build
+        run: npm run build
