@@ -21,13 +21,18 @@ export default function Hero() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mediaQuery.matches);
+  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
+  const update = () => {
+    setPrefersReducedMotion(mediaQuery.matches);
+  };
+
+  update(); // set initial value
+  mediaQuery.addEventListener("change", update);
+
+  return () => mediaQuery.removeEventListener("change", update);
+}, []);
+
 
   useEffect(() => {
     if (isPaused || prefersReducedMotion) return;
